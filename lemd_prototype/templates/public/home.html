@@ -1,0 +1,50 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+    
+      <h1 class="display-3">Welcome to LEMD prototype</h1>
+    
+      <p>A project supported by DOE SBIR program to develop a library of deep neural network based forcefields for Molecular Dynamics simulation.</p>
+      <p><a href="http://www.lifeeusa.com" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+    </div>
+</div><!-- /.jumbotron -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-5">
+      <h4>Input</h4>
+      <br></br>
+      <div class="input-group">
+	<textarea class="form-control" style="resize:none" aria-label="coordinates" rows='15'></textarea>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <h4>Plot</h4>
+      <div class='img'><img class='img-fluid' src='plot/distributions'></div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      <h2><i class="fa fa-code"></i> DeepMD-kit </h2>
+      <p>Deep learning based model of interatomic potential energy and force field</p>
+      <p><a class="btn btn-outline-secondary" href="https://github.com/deepmodeling/deepmd-kit">GitHub Site &raquo;</a></p>
+    </div>
+    <div class="col-lg-4">
+      <h2><i class="fa fa-database"></i> MongoDB </h2>
+      <p> NoSQL database program providing JSON-like documents with RESTful API</p>
+      <p><a href="https://www.mongodb.com/" class="btn btn-outline-secondary">Official website &raquo;</a></p>
+   </div>
+    <div class="col-lg-4">
+      <h2><i class="fa fa-search"></i> Potential Match Algorithm </h2>
+      <p> Locate a proper forcefield for input simulation system</p>
+      <p><a href="http://www.lifee.com/" class="btn btn-outline-secondary">Official website &raquo;</a></p>
+    </div>
+  </div><!-- /.row -->
+</div>
+{% endblock %}
+
