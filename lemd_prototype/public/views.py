@@ -94,4 +94,4 @@ def about():
 def testfile():
     """test MongoDB"""
 
-    return '<h1> feed_content() </h1>'
+    return '<h1>' + feed_content() + '</h1>'
