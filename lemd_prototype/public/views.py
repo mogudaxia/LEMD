@@ -21,6 +21,7 @@ from lemd_prototype.utils import flash_errors
 # Added section for plotting input systems
 from lemd_prototype.plots import plot_dist
 from lemd_prototype.input_phaser import *
+from lemd_prototype.mat_database import feed_content
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
 
@@ -88,3 +89,9 @@ def about():
     """About page."""
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
+
+@blueprint.route("/testfile/")
+def testfile():
+    """test MongoDB"""
+
+    return '<h1> feed_content() </h1>'
