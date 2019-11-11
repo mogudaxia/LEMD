@@ -15,6 +15,7 @@ from lemd_prototype.extensions import (
     login_manager,
     migrate,
     webpack,
+    mongo
 )
 
 
@@ -44,6 +45,7 @@ def register_extensions(app):
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     webpack.init_app(app)
+    mongo.init_app(app)
     return None
 
 
