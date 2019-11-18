@@ -92,14 +92,10 @@ def about():
     return render_template("public/about.html", form=form)
 
 
-@blueprint.route("/testfile/<file_id>")
 @blueprint.route("/testfile/")
-def testfile(file_id = None):
+def testfile(file_id=None):
     """test MongoDB"""
     file = DpField('Si', 'v1')
+    file_id = str(file.get_dist())
 
-    if file_id is not None:
-        f = get_file(file_id)
-        response = make_response(f.read())
-        return response
-    return render_template("mongotest.html", file=str(file.get_fileid()))
+    return render_template("mongotest.html", file=file_id)
