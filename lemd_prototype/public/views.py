@@ -99,6 +99,8 @@ def testfile(file_id=None):
     file = DpField('Si', 'v1')
     if file_id is not None:
         f = get_file(file_id)
-        return make_response(f.read())
+        response = make_response(f.read())
+        response.mimetype = 'application/octet-stream'
+        return response
 
     return render_template("testfile.html", file=str(file.get_fileid()))
