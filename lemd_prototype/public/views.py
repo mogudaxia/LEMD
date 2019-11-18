@@ -94,4 +94,4 @@ def about():
 def testfile():
     """test MongoDB"""
     file = DpField('Si', 'v1')
-    return '<h1>' + file.get_fileid().toString() + '</h1>'
+    return '<h1>' + str(file.get_fileid()) + '</h1>'
