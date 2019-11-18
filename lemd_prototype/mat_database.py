@@ -22,7 +22,7 @@ class DpField:
         self._version = vers
         db_ids = self._system + '_' + self._version
         try:
-            self._ids = mongo.db.fs.files.find({"name": db_ids})
+            self._ids = mongo.db.fs.files.find_one({"name": db_ids})
         except len(self._ids) == 0:
             raise ValueError("Given system not found in database")
 
