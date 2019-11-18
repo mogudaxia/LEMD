@@ -21,7 +21,7 @@ from lemd_prototype.utils import flash_errors
 # Added section for plotting input systems
 from lemd_prototype.plots import plot_dist
 from lemd_prototype.input_phaser import *
-from lemd_prototype.mat_database import feed_content
+from lemd_prototype.mat_database import DpField
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
 
@@ -93,5 +93,5 @@ def about():
 @blueprint.route("/testfile/")
 def testfile():
     """test MongoDB"""
-
-    return '<h1>' + feed_content() + '</h1>'
+    file = DpField('Si', 'v1')
+    return '<h1>' + file.get_fileid() + '</h1>'
