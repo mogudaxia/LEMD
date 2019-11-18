@@ -1,5 +1,6 @@
 from lemd_prototype.extensions import mongo
 import gridfs
+from bson.objectid import ObjectId
 
 
 def feed_content():
@@ -31,3 +32,9 @@ class DpField:
 
     def get_fileid(self):
         return self._ids["_id"]
+
+
+def get_file(file_id: str):
+    fs = gridfs.GridFS(mongo.db)
+    f = fs.get(ObjectId(file_id))
+    return f

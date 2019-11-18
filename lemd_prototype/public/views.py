@@ -10,6 +10,7 @@ from flask import (
     url_for,
     # Added section for matplotlib plotting
     send_file,
+    make_response
 )
 from flask_login import login_required, login_user, logout_user
 
@@ -21,7 +22,7 @@ from lemd_prototype.utils import flash_errors
 # Added section for plotting input systems
 from lemd_prototype.plots import plot_dist
 from lemd_prototype.input_phaser import *
-from lemd_prototype.mat_database import DpField
+from lemd_prototype.mat_database import DpField, get_file
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
 
@@ -90,8 +91,15 @@ def about():
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
 
+
+@blueprint.route("/testfile/<file_id>")
 @blueprint.route("/testfile/")
-def testfile():
+def testfile(file_id = None):
     """test MongoDB"""
     file = DpField('Si', 'v1')
-    return '<h1>' + str(file.get_fileid()) + '</h1>'
+
+    if file_id is not None:
+        f = get_file(file_id)
+        response = make_response(f.read())
+        return response
+    return render_template("mongotest.html", file=str(file.get_fileid()))
