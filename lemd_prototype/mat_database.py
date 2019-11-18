@@ -7,10 +7,6 @@ def feed_content():
 #    res = ''
 #    for q in mongo.db.fs.files.find():
 #        res += str(q)
-    return ''.join([str(q) for q in mongo.db.fs.files.find()])
-
-<<<<<<< HEAD
-=======
     return ''.join([str(q['_id']) for q in mongo.db.fs.files.find()])
 
 
@@ -35,4 +31,3 @@ class DpField:
 
     def get_fileid(self):
         return self._ids["_id"]
->>>>>>> db95c081e95950404a0acec2aeedced3d07503ea
