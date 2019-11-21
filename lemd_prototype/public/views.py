@@ -15,7 +15,7 @@ from flask import (
 from flask_login import login_required, login_user, logout_user
 
 from lemd_prototype.extensions import login_manager
-from lemd_prototype.public.forms import LoginForm
+from lemd_prototype.public.forms import LoginForm, InputForm
 from lemd_prototype.user.forms import RegisterForm
 from lemd_prototype.user.models import User
 from lemd_prototype.utils import flash_errors
@@ -37,6 +37,10 @@ def load_user(user_id):
 def home():
     """Home page."""
     form = LoginForm(request.form)
+    with open("POSCAR", "r") as samplefile:
+        sample_input = samplefile.read()
+    inputs = InputForm()
+
     current_app.logger.info("Hello from the home page!")
     # Handle logging in
     if request.method == "POST":
@@ -46,8 +50,8 @@ def home():
             redirect_url = request.args.get("next") or url_for("user.members")
             return redirect(redirect_url)
         else:
-            flash_errors(form)
-    return render_template("public/home.html", form=form)
+            flash_errors(login)
+    return render_template("public/home.html", form=form, inputs=inputs)
 
 # Test
 @blueprint.route("/plot/distributions", methods=['GET'])
@@ -102,5 +106,7 @@ def testfile(file_id=None):
         response = make_response(f.read())
         response.mimetype = 'application/octet-stream'
         return response
+    with open("POSCAR", "r") as f:
+        sf = f.read()
 
-    return render_template("testfile.html", file=str(file.get_fileid()))
+    return render_template("testfile.html", file=str(file.get_fileid()), sf=sf)

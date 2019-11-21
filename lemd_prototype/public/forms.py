@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """Public forms."""
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField
+from wtforms import PasswordField, StringField, TextAreaField
+# from wtforms import FileField
 from wtforms.validators import DataRequired
+from pymatgen import Structure
 
 from lemd_prototype.user.models import User
+# from lemd_prototype.inputconverter import InputConverter
 
 
 class LoginForm(FlaskForm):
@@ -37,3 +40,38 @@ class LoginForm(FlaskForm):
             self.username.errors.append("User not activated")
             return False
         return True
+
+class InputForm(FlaskForm):
+    """User input structure, can be either VASP/POSCAR format, 
+       or, if user have logged in with provided API key for 
+       the Materials Project, material ID"""
+
+    with open("POSCAR", "r") as f:
+        samplefile = f.read()
+    textform = TextAreaField(render_kw={"placeholder":"# Sample input in VASP/POSCAR format\n" + str(samplefile)})
+#   fileform = FileField("Upload your input file")
+    
+    def __init__(self, *args, **kwargs):
+        """Create instance"""
+        super(InputForm, self).__init__(*args, **kwargs)
+        self.default_struct = Structure.from_file("POSCAR") 
+
+    def validate_data(self):
+        """Try to phrase data from textarea, if it is empty,
+           try to read and phrase uploaded file. If neither
+           exsits, use prefilled default input data"""
+        if self.textform.data:
+            try:
+                return Structure.from_str(self.textform.data, "poscar")
+            except ValueError:
+                self.textform.errors.append("Invalid input data, using demo")
+                return self.default_struct
+#       elif self.fileform.data:
+#           try:
+#               data = self.data_from_file()
+#               inputs = Input_Phraser(data)
+#               return inputs.data
+#           except ValueError:
+#               return self.input_data
+        else:
+            return self.default_struct
