@@ -48,7 +48,7 @@ class InputForm(FlaskForm):
 
     with open("POSCAR", "r") as f:
         samplefile = f.read()
-    textform = TextAreaField(render_kw={"placeholder":"# Sample input in VASP/POSCAR format\n" + str(samplefile)})
+    inputdata = TextAreaField(render_kw={"placeholder":"# Sample input in VASP/POSCAR format\n" + str(samplefile)})
 #   fileform = FileField("Upload your input file")
     
     def __init__(self, *args, **kwargs):
@@ -60,12 +60,15 @@ class InputForm(FlaskForm):
         """Try to phrase data from textarea, if it is empty,
            try to read and phrase uploaded file. If neither
            exsits, use prefilled default input data"""
-        if self.textform.data:
+        initial_validation = super(InputForm, self).validate()
+        if not initial_validation:
+            return False
+        if self.inputdata.data:
             try:
-                return Structure.from_str(self.textform.data, "poscar")
-            except ValueError:
-                self.textform.errors.append("Invalid input data, using demo")
-                return self.default_struct
+                return (0, Structure.from_str(self.inputdata.data, "poscar"))
+            except:
+                self.inputdata.errors.append("Invalid input data, showing default system")
+                return (1, self.default_struct)
 #       elif self.fileform.data:
 #           try:
 #               data = self.data_from_file()
@@ -74,4 +77,5 @@ class InputForm(FlaskForm):
 #           except ValueError:
 #               return self.input_data
         else:
-            return self.default_struct
+            self.inputdata.errors.append("Showing default system")
+            return (2, self.default_struct)

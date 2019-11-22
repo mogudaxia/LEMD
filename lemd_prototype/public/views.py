@@ -43,8 +43,8 @@ def home():
 def login():
     """handle login"""
     form = LoginForm(request.form)
-    with open("POSCAR", "r") as samplefile:
-        sample_input = samplefile.read()
+    # with open("POSCAR", "r") as samplefile:
+        # sample_input = samplefile.read()
     # inputs = InputForm()
 
     current_app.logger.info("Hello from the home page!")
@@ -56,7 +56,7 @@ def login():
         redirect_url = request.args.get("next") or url_for("user.members")
         return redirect(redirect_url)
     else:
-        flash_errors(login)
+        flash_errors(form)
     # structure = inputs.validate_data()
     # dist = extract_descrpt(structure)
     # script, div = create_figure(dist, 10)
@@ -65,10 +65,14 @@ def login():
 @blueprint.route("/submitdata", methods=["POST"])
 def submitdata():
     inputs = InputForm(request.form)
-    structure = inputs.validate_data()
+    flag, structure = inputs.validate_data()
+    if flag == 1:
+        flash_errors(inputs)
+    elif flag == 2:
+        flash_errors(inputs)
     dist = extract_descrpt(structure)
     script, div = create_figure(dist, 10)
-    return render_template("public/home.html", form=LoginForm(), inputs=inputs, script=script, div=div)
+    return render_template("public/home.html", form=LoginForm(request.form), inputs=inputs, script=script, div=div)
 
 
 # Test

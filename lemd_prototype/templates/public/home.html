@@ -16,10 +16,13 @@
   <div class="row">
     <div class="col-lg-5">
       <h4>Input</h4>
-      <div class="input-group mt-4" action="/submitdata">
-        {{ inputs.textform(class="form-control", style="resize:none", rows="15") }}
+      <form method="POST" action="/submitdata">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div class="input-group mt-4">
+        {{ inputs.inputdata(class="form-control", style="resize:none", rows="15") }}
       </div>
-        <button class="btn btn-primary mt-3" type="submit">Submit</button>
+      <button class="btn btn-primary mt-3 mb-3" type="submit">Submit</button>
+      </form>
     </div>
     <div class="col-lg-7">
       <h4 class="mb-4">Plot</h4>
