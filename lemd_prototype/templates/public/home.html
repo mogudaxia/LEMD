@@ -16,14 +16,17 @@
   <div class="row">
     <div class="col-lg-5">
       <h4>Input</h4>
-      <div class="input-group">
+      <div class="input-group mt-4">
         {{ inputs.textform(class="form-control", style="resize:none", rows="15") }}
       </div>
-        <button class="btn btn-primary m-auto" type="submit">Submit</button>
+        <button class="btn btn-primary mt-3" type="submit">Submit</button>
     </div>
     <div class="col-lg-7">
-      <h4>Plot</h4>
-      <div class='img'><img class='img-fluid' src='plot/distributions'></div>
+      <h4 class="mb-4">Plot</h4>
+      {{ div|safe }}
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
+      {{ script|safe }}
     </div>
   </div>
 </div>
@@ -40,7 +43,7 @@
       <p><a href="https://www.mongodb.com/" class="btn btn-outline-secondary">Official website &raquo;</a></p>
    </div>
     <div class="col-lg-4">
-      <h2><i class="fa fa-search"></i> Potential Match Algorithm </h2>
+      <h2><i class="fa fa-search"></i> Match Algorithm </h2>
       <p> Locate a proper forcefield for input simulation system</p>
       <p><a href="http://www.lifee.com/" class="btn btn-outline-secondary">Official website &raquo;</a></p>
     </div>

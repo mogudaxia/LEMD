@@ -20,7 +20,7 @@ from lemd_prototype.user.forms import RegisterForm
 from lemd_prototype.user.models import User
 from lemd_prototype.utils import flash_errors
 # Added section for plotting input systems
-from lemd_prototype.plots import plot_dist
+from lemd_prototype.createfigure import create_figure
 from lemd_prototype.input_phaser import *
 from lemd_prototype.mat_database import DpField, get_file
 
@@ -51,16 +51,20 @@ def home():
             return redirect(redirect_url)
         else:
             flash_errors(login)
-    return render_template("public/home.html", form=form, inputs=inputs)
+    structure = inputs.validate_data()
+    dist = extract_descrpt(structure)
+    script, div = create_figure(dist, 10)
+    return render_template("public/home.html", form=form, inputs=inputs, script=script, div=div)
 
 # Test
-@blueprint.route("/plot/distributions", methods=['GET'])
-def figure_plot():
-    structure = get_struct_from_mp("mp-1201492")
-    distribution = extract_descrpt(structure)
-    dist_fig = plot_dist(distribution)
-    return send_file(dist_fig, attachment_filename='plog.png', mimetype='image/png')
-# Test!
+#@blueprint.route("/plot/distributions", methods=['GET'])
+#def figure_plot():
+#    structure = get_struct_from_mp("mp-1201492")
+#    distribution = extract_descrpt(structure)
+#    script, div = create_figure(distribution, 10)
+##   return send_file(dist_fig, attachment_filename='plog.png', mimetype='image/png')
+#    return render_template("public/home.html", )
+## Test!
 
 @blueprint.route("/logout/")
 @login_required
