@@ -9,7 +9,7 @@ from flask import (
     request,
     url_for,
     # Added section for matplotlib plotting
-    send_file,
+    # send_file,
     make_response
 )
 from flask_login import login_required, login_user, logout_user
@@ -39,12 +39,13 @@ def home():
     current_app.logger.info("Hello from the LEMD System")
     return render_template("public/home.html", form=LoginForm(), inputs=InputForm())
 
+
 @blueprint.route("/login", methods=["POST"])
 def login():
     """handle login"""
     form = LoginForm(request.form)
     # with open("POSCAR", "r") as samplefile:
-        # sample_input = samplefile.read()
+    # sample_input = samplefile.read()
     # inputs = InputForm()
 
     current_app.logger.info("Hello from the home page!")
@@ -62,16 +63,17 @@ def login():
     # script, div = create_figure(dist, 10)
     return render_template("public/home.html", form=form, inputs=InputForm())
 
+
 @blueprint.route("/submitdata", methods=["POST"])
 def submitdata():
     inputs = InputForm(request.form)
-    flag, structure = inputs.validate_data()
+    flag, structure, title = inputs.validate_data()
     if flag == 1:
         flash_errors(inputs)
     elif flag == 2:
         flash_errors(inputs)
     dist = extract_descrpt(structure)
-    script, div = create_figure(dist, 10)
+    script, div = create_figure(dist, title, 10)
     return render_template("public/home.html", form=LoginForm(request.form), inputs=inputs, script=script, div=div)
 
 

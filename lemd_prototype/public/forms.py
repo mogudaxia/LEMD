@@ -61,14 +61,16 @@ class InputForm(FlaskForm):
            try to read and phrase uploaded file. If neither
            exsits, use prefilled default input data"""
         initial_validation = super(InputForm, self).validate()
+        title = 'Example-Si232'
         if not initial_validation:
-            return False
+            return 1, self.default_struct, title
         if self.inputdata.data:
             try:
-                return (0, Structure.from_str(self.inputdata.data, "poscar"))
+                title = self.inputdata.data.partition('\n')[0]
+                return 0, Structure.from_str(self.inputdata.data, "poscar"), title
             except:
                 self.inputdata.errors.append("Invalid input data, showing default system")
-                return (1, self.default_struct)
+                return 1, self.default_struct, title
 #       elif self.fileform.data:
 #           try:
 #               data = self.data_from_file()
@@ -78,4 +80,4 @@ class InputForm(FlaskForm):
 #               return self.input_data
         else:
             self.inputdata.errors.append("Showing default system")
-            return (2, self.default_struct)
+            return 2, self.default_struct, title
