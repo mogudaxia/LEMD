@@ -33,38 +33,53 @@ def load_user(user_id):
     return User.get_by_id(int(user_id))
 
 
-@blueprint.route("/", methods=["GET", "POST"])
+@blueprint.route("/", methods=["GET"])
 def home():
     """Home page."""
+    current_app.logger.info("Hello from the LEMD System")
+    return render_template("public/home.html", form=LoginForm(), inputs=InputForm())
+
+@blueprint.route("/login", methods=["POST"])
+def login():
+    """handle login"""
     form = LoginForm(request.form)
     with open("POSCAR", "r") as samplefile:
         sample_input = samplefile.read()
-    inputs = InputForm()
+    # inputs = InputForm()
 
     current_app.logger.info("Hello from the home page!")
     # Handle logging in
-    if request.method == "POST":
-        if form.validate_on_submit():
-            login_user(form.user)
-            flash("You are logged in.", "success")
-            redirect_url = request.args.get("next") or url_for("user.members")
-            return redirect(redirect_url)
-        else:
-            flash_errors(login)
+    # if request.method == "POST":
+    if form.validate_on_submit():
+        login_user(form.user)
+        flash("You are logged in.", "success")
+        redirect_url = request.args.get("next") or url_for("user.members")
+        return redirect(redirect_url)
+    else:
+        flash_errors(login)
+    # structure = inputs.validate_data()
+    # dist = extract_descrpt(structure)
+    # script, div = create_figure(dist, 10)
+    return render_template("public/home.html", form=form, inputs=InputForm())
+
+@blueprint.route("/submitdata", methods=["POST"])
+def submitdata():
+    inputs = InputForm(request.form)
     structure = inputs.validate_data()
     dist = extract_descrpt(structure)
     script, div = create_figure(dist, 10)
-    return render_template("public/home.html", form=form, inputs=inputs, script=script, div=div)
+    return render_template("public/home.html", form=LoginForm(), inputs=inputs, script=script, div=div)
+
 
 # Test
-#@blueprint.route("/plot/distributions", methods=['GET'])
-#def figure_plot():
+# @blueprint.route("/plot/distributions", methods=['GET'])
+# def figure_plot():
 #    structure = get_struct_from_mp("mp-1201492")
 #    distribution = extract_descrpt(structure)
 #    script, div = create_figure(distribution, 10)
-##   return send_file(dist_fig, attachment_filename='plog.png', mimetype='image/png')
+#    return send_file(dist_fig, attachment_filename='plog.png', mimetype='image/png')
 #    return render_template("public/home.html", )
-## Test!
+# Test!
 
 @blueprint.route("/logout/")
 @login_required
